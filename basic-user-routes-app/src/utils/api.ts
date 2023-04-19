@@ -17,7 +17,7 @@ export const getMe = async () => {
     return;
   }
 
-  const apiUrl = "https://cms-admin-v2.ihsansolusi.co.id/testapi/auth/me";
+  const apiUrl = `${process.env.NEXT_PUBLIC_BASE_API_URL}/auth/me`;
   const headers = {
     "Content-Type": "application/json",
     Authorization: `Bearer ${token}`,
@@ -46,7 +46,7 @@ export const register = async (formState: IFormState) => {
     email,
     password,
   });
-  const apiUrl = "https://cms-admin-v2.ihsansolusi.co.id/testapi/auth/register";
+  const apiUrl = `${process.env.NEXT_PUBLIC_BASE_API_URL}/auth/register`;
   const headers = {
     "Content-Type": "application/json",
   };
@@ -76,7 +76,7 @@ export const register = async (formState: IFormState) => {
 export const login = async (formState: IFormState) => {
   const { email, password } = formState;
   const body = JSON.stringify({ email, password });
-  const apiUrl = "https://cms-admin-v2.ihsansolusi.co.id/testapi/auth/login";
+  const apiUrl = `${process.env.NEXT_PUBLIC_BASE_API_URL}/auth/login`;
   const headers = {
     "Content-Type": "application/json",
   };
@@ -107,7 +107,7 @@ export const addUser = async (addUserForm: IAddUserForm) => {
   const token = getToken();
   const { name, address, gender, born_date } = addUserForm;
   const body = JSON.stringify({ name, address, gender, born_date });
-  const apiUrl = "https://cms-admin-v2.ihsansolusi.co.id/testapi/user";
+  const apiUrl = `${process.env.NEXT_PUBLIC_BASE_API_URL}/user`;
   const headers = {
     "Content-Type": "application/json",
     Authorization: `Bearer ${token}`,
@@ -136,7 +136,7 @@ export const addUser = async (addUserForm: IAddUserForm) => {
 
 export const getUsers = async () => {
   const token = getToken();
-  const apiUrl = "https://cms-admin-v2.ihsansolusi.co.id/testapi/user";
+  const apiUrl = `${process.env.NEXT_PUBLIC_BASE_API_URL}/user`;
   const headers = {
     "Content-Type": "application/json",
     Authorization: `Bearer ${token}`,
@@ -165,7 +165,7 @@ export const getUsers = async () => {
 
 export const getUserById = async (id: number) => {
   const token = getToken();
-  const apiUrl = `https://cms-admin-v2.ihsansolusi.co.id/testapi/user/${id}`;
+  const apiUrl = `${process.env.NEXT_PUBLIC_BASE_API_URL}/user/${id}`;
   const headers = {
     "Content-Type": "application/json",
     Authorization: `Bearer ${token}`,
@@ -194,7 +194,7 @@ export const getUserById = async (id: number) => {
 export const editUserById = async (editUserForm: IAddUserForm, id: number) => {
   const token = getToken();
   const { name, address, gender, born_date } = editUserForm;
-  const apiUrl = `https://cms-admin-v2.ihsansolusi.co.id/testapi/user/${id}`;
+  const apiUrl = `${process.env.NEXT_PUBLIC_BASE_API_URL}/user/${id}`;
   const body = JSON.stringify({ name, address, gender, born_date });
   const headers = {
     "Content-Type": "application/json",
@@ -223,7 +223,7 @@ export const editUserById = async (editUserForm: IAddUserForm, id: number) => {
 
 export const deleteUserById = async (id: number) => {
   const token = getToken();
-  const apiUrl = `https://cms-admin-v2.ihsansolusi.co.id/testapi/user/${id}`;
+  const apiUrl = `${process.env.NEXT_PUBLIC_BASE_API_URL}/user/${id}`;
   const headers = {
     "Content-Type": "application/json",
     Authorization: `Bearer ${token}`,
