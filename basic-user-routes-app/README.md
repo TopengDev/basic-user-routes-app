@@ -12,6 +12,7 @@ yarn dev
 pnpm dev
 # or
 yarn build
+```bash
 
 1. Register or login first
 2. features include (create new user, edit user, delete user, search user by id)
