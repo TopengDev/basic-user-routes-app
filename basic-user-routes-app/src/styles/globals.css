@@ -1,3 +1,33 @@
 @tailwind base;
 @tailwind components;
 @tailwind utilities;
+
+.centered-layout {
+  @apply w-screen h-screen flex items-center justify-center;
+}
+.input-style {
+  @apply w-96 border-slate-300 border-2 border-solid rounded-lg px-4 py-2;
+}
+h1,
+.h1 {
+  @apply 2xl:text-4xl xl:text-3xl lg:text-2xl md:text-xl sm:text-lg text-base;
+}
+h2,
+.h2 {
+  @apply 2xl:text-3xl xl:text-2xl lg:text-xl md:text-lg sm:text-base text-sm;
+}
+h3,
+.h3 {
+  @apply 2xl:text-2xl xl:text-xl lg:text-lg md:text-base sm:text-sm text-xs;
+}
+h4,
+.h4 {
+  @apply 2xl:text-xl xl:text-lg lg:text-base md:text-sm sm:text-sm text-xs;
+}
+
+.p1 {
+  @apply 2xl:text-lg xl:text-lg lg:text-base md:text-sm sm:text-sm text-xs;
+}
+.p2 {
+  @apply 2xl:text-base xl:text-base lg:text-sm md:text-xs sm:text-xs text-xs;
+}
