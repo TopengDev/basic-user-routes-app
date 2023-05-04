@@ -2,6 +2,7 @@
 ## with NextJS
 
 1. put NEXT_PUBLIC_BASE_API_URL in .env or .env.local to build or run the server
+
 note: create a .env.local if you want to run in local development with "yarn dev" or "npm run dev", create a .env if you want to build and run it
 
 
