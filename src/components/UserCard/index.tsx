@@ -8,16 +8,20 @@ interface IProps {
   state: {
     addUserPopupWindow: boolean;
     editUserPopupWindow: boolean;
+    deleteConfirmationPopup: boolean;
   };
   setState: Dispatch<
     SetStateAction<{
       addUserPopupWindow: boolean;
       editUserPopupWindow: boolean;
+      deleteConfirmationPopup: boolean;
     }>
   >;
   setEditUserForm: Dispatch<SetStateAction<IEditUserForm>>;
   users: IUser[];
   setUsers: Dispatch<SetStateAction<IUser[]>>;
+  delId: number;
+  setDelId: Dispatch<SetStateAction<number>>;
 }
 
 const UserCard: FC<IProps> = ({
@@ -27,6 +31,8 @@ const UserCard: FC<IProps> = ({
   setEditUserForm,
   users,
   setUsers,
+  setDelId,
+  delId,
 }) => {
   const handleEdit = async (user: IEditUserForm) => {
     setEditUserForm({
@@ -39,9 +45,28 @@ const UserCard: FC<IProps> = ({
     setState({ ...state, editUserPopupWindow: true });
   };
   const handleDelete = async (id: number) => {
-    await deleteUserById(id);
-    const tmpUsers = users.filter((user) => user.id != id);
-    setUsers(tmpUsers);
+    setDelId(id);
+    setState({ ...state, deleteConfirmationPopup: true });
+  };
+  const formatDate = () => {
+    const date = new Date(user.born_date);
+    const day = String(date.getDate()).padStart(2, "0");
+    const month = date.toLocaleString("default", { month: "long" });
+    const year = date.getFullYear();
+    const formattedDate = `${day} ${month} ${year}`;
+    return formattedDate;
+  };
+  const formattedInputDate = () => {
+    let date = new Date(user.created_at);
+    let day = date.getDate().toString().padStart(2, "0");
+    let month = date.toLocaleString("default", { month: "long" });
+    let year = date.getFullYear().toString().substr(-2);
+    let hour = date.getHours().toString().padStart(2, "0");
+    let minute = date.getMinutes().toString().padStart(2, "0");
+    let second = date.getSeconds().toString().padStart(2, "0");
+
+    let formattedDate = `${day} ${month} ${year}, ${hour} : ${minute} : ${second}`;
+    return formattedDate;
   };
   return (
     <div
@@ -51,18 +76,26 @@ const UserCard: FC<IProps> = ({
       <div>
         <div className="p2">{user.name}</div>
         <div className="p2">
-          id:&nbsp;
+          Id:&nbsp;
           {user.id}
+        </div>
+        <div className="p2">
+          Input date:&nbsp;
+          {formattedInputDate()}
         </div>
       </div>
       <div>
         <div className="p2">
-          birthday:&nbsp;
-          {user.born_date.toString()}
+          Birthday:&nbsp;
+          {formatDate()}
         </div>
         <div className="p2">
-          address:&nbsp;
+          Address:&nbsp;
           {user.address}
+        </div>
+        <div className="p2">
+          Gender:&nbsp;
+          {user.gender === "l" ? "Male" : "Female"}
         </div>
       </div>
       <div className="flex items-center justify-center gap-4">

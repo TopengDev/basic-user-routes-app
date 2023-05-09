@@ -4,11 +4,16 @@ import { addUser, getUsers } from "@/utils/api";
 import FormCard from "../FormCard";
 
 interface IProps {
-  state: { addUserPopupWindow: boolean; editUserPopupWindow: boolean };
+  state: {
+    addUserPopupWindow: boolean;
+    editUserPopupWindow: boolean;
+    deleteConfirmationPopup: boolean;
+  };
   setState: Dispatch<
     SetStateAction<{
       addUserPopupWindow: boolean;
       editUserPopupWindow: boolean;
+      deleteConfirmationPopup: boolean;
     }>
   >;
   setUsers: Dispatch<SetStateAction<IUser[]>>;
@@ -66,14 +71,29 @@ const AddUserForm: FC<IProps> = ({ setState, setUsers, state }) => {
             />
           </div>
           <div className="flex flex-col gap-1">
-            <label htmlFor="adduser-gender">gender</label>
-            <input
-              type="text"
-              id="adduser-gender"
-              placeholder="l / p"
-              className="input-style"
-              onChange={(e) => handleChange(e, "gender")}
-            />
+            <div>
+              <label htmlFor="adduser-gender">Gender</label>
+              <div className="pt-2">
+                <label className="pr-4">
+                  <input
+                    type="radio"
+                    name="gender"
+                    value="l"
+                    onChange={(e) => handleChange(e, "gender")}
+                  />
+                  Male
+                </label>
+                <label className="pr-4">
+                  <input
+                    type="radio"
+                    name="gender"
+                    value="p"
+                    onChange={(e) => handleChange(e, "gender")}
+                  />
+                  Female
+                </label>
+              </div>
+            </div>
           </div>
           <div className="flex flex-col gap-1">
             <label htmlFor="adduser-born-date">Born date</label>

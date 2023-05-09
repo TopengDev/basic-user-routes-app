@@ -8,6 +8,7 @@ interface IProps extends IDefaultProps {
     SetStateAction<{
       addUserPopupWindow: boolean;
       editUserPopupWindow: boolean;
+      deleteConfirmationPopup: boolean;
     }>
   >;
 }
@@ -19,7 +20,11 @@ const PopupWindow: FC<IProps> = ({ setState, children }) => {
         <button
           className="mb-2"
           onClick={() => {
-            setState({ addUserPopupWindow: false, editUserPopupWindow: false });
+            setState({
+              addUserPopupWindow: false,
+              editUserPopupWindow: false,
+              deleteConfirmationPopup: false,
+            });
           }}
         >
           <CloseSVG />

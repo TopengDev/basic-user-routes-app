@@ -10,11 +10,13 @@ interface IProps {
   state: {
     addUserPopupWindow: boolean;
     editUserPopupWindow: boolean;
+    deleteConfirmationPopup: boolean;
   };
   setState: Dispatch<
     SetStateAction<{
       addUserPopupWindow: boolean;
       editUserPopupWindow: boolean;
+      deleteConfirmationPopup: boolean;
     }>
   >;
   setUsers: Dispatch<SetStateAction<IUser[]>>;

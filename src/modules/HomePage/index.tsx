@@ -17,6 +17,7 @@ import {
 import type { IUser, IEditUserForm, IMe } from "@/interfaces";
 import { destroyCookie } from "nookies";
 import { useRouter } from "next/router";
+import DeleteConfirmation from "@/components/DeleteConfirmation";
 
 interface IProps {
   setToken: Dispatch<SetStateAction<string>>;
@@ -40,6 +41,7 @@ const HomePage: FC<IProps> = ({ setToken }) => {
   const [state, setState] = useState({
     addUserPopupWindow: false,
     editUserPopupWindow: false,
+    deleteConfirmationPopup: false,
   });
   const [me, setMe] = useState<IMe>({
     id: null,
@@ -48,6 +50,7 @@ const HomePage: FC<IProps> = ({ setToken }) => {
     name: null,
     email: null,
   });
+  const [delId, setDelId] = useState(-1);
 
   useEffect(() => {
     const fetchData = async () => {
@@ -67,6 +70,19 @@ const HomePage: FC<IProps> = ({ setToken }) => {
 
   return (
     <section className="flex justify-center items-center flex-col p-8">
+      {state.deleteConfirmationPopup ? (
+        <PopupWindow setState={setState}>
+          <DeleteConfirmation
+            state={state}
+            setState={setState}
+            setUsers={setUsers}
+            delId={delId}
+            users={users}
+          />
+        </PopupWindow>
+      ) : (
+        ""
+      )}
       {state.editUserPopupWindow ? (
         <PopupWindow setState={setState}>
           <EditUserForm
@@ -119,6 +135,8 @@ const HomePage: FC<IProps> = ({ setToken }) => {
                 setUsers={setUsers}
                 user={user}
                 users={users}
+                delId={delId}
+                setDelId={setDelId}
               />
             );
           })}
