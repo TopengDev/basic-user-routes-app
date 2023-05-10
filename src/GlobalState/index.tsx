@@ -1,14 +1,10 @@
 import {
   type FC,
   useState,
-  useEffect,
   createContext,
   Dispatch,
   SetStateAction,
 } from "react";
-import { getMe, getUsers } from "@/utils/api";
-import { useRouter } from "next/router";
-import { destroyCookie, parseCookies } from "nookies";
 import { state, TGlobalState } from "./state";
 import IDefaultProps from "@/interfaces";
 
@@ -23,8 +19,6 @@ export const GlobalContext = createContext<TGlobalContext>({
 });
 
 const GlobalState: FC<IDefaultProps> = ({ children }) => {
-  const router = useRouter();
-
   const [globalState, setGlobalState] = useState<TGlobalState>(state);
 
   return (

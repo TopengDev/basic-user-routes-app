@@ -3,7 +3,7 @@ import { NextPage } from "next";
 import { HomePage, AuthPage } from "@/modules";
 import { parseCookies, destroyCookie } from "nookies";
 import { useRouter } from "next/router";
-import { useContext, useEffect, useState } from "react";
+import { memo, useContext, useEffect, useState } from "react";
 import { GlobalContext } from "@/GlobalState";
 import { getMe, getUsers } from "@/utils/api";
 
@@ -31,7 +31,6 @@ const Home: NextPage = () => {
           users: users.data,
         });
       }
-      console.log("RANRANRAN");
     };
 
     if (tokenInCookie) {
@@ -60,10 +59,9 @@ const Home: NextPage = () => {
         </div>
       ) : (
         <AuthPage />
-        // <div />
       )}
     </main>
   );
 };
 
-export default Home;
+export default memo(Home);

@@ -26,7 +26,6 @@ const LoginForm: FC = () => {
     e.preventDefault();
 
     const LoggedIn = await login(state.authFormState);
-    console.log(LoggedIn);
     if (LoggedIn) {
       setState({ ...state, token: true });
       router.reload();
