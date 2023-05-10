@@ -1,47 +1,31 @@
-import type { FC, Dispatch, SetStateAction } from "react";
+import { FC, useContext } from "react";
 import FormCard from "../FormCard";
-import { IEditUserForm, IUser } from "@/interfaces";
 
 import { editUserById, getUsers } from "@/utils/api";
+import { GlobalContext } from "@/GlobalState";
 
-interface IProps {
-  editUserForm: IEditUserForm;
-  setEditUserForm: Dispatch<SetStateAction<IEditUserForm>>;
-  state: {
-    addUserPopupWindow: boolean;
-    editUserPopupWindow: boolean;
-    deleteConfirmationPopup: boolean;
-  };
-  setState: Dispatch<
-    SetStateAction<{
-      addUserPopupWindow: boolean;
-      editUserPopupWindow: boolean;
-      deleteConfirmationPopup: boolean;
-    }>
-  >;
-  setUsers: Dispatch<SetStateAction<IUser[]>>;
-}
-
-const EditUserForm: FC<IProps> = ({
-  editUserForm,
-  setEditUserForm,
-  state,
-  setState,
-  setUsers,
-}) => {
+const EditUserForm: FC = () => {
+  const { state, setState } = useContext(GlobalContext);
   const handleEditSubmit = async (e: React.FormEvent<HTMLFormElement>) => {
     e.preventDefault();
-    await editUserById(editUserForm, editUserForm.id);
-    await getUsers().then((data) => setUsers(data.data));
-    setState({ ...state, editUserPopupWindow: false });
+    await editUserById(state.editUserForm, state.editUserForm.id);
+    const users = await getUsers();
+    setState({
+      ...state,
+      users: users.data,
+      popups: { ...state.popups, editUserPopupWindow: false },
+    });
   };
   const handleEditChange = (
     e: React.ChangeEvent<HTMLInputElement>,
     field: string
   ) => {
-    setEditUserForm({
-      ...editUserForm,
-      [field]: e.target.value,
+    setState({
+      ...state,
+      editUserForm: {
+        ...state.editUserForm,
+        [field]: e.target.value,
+      },
     });
   };
   return (
@@ -61,7 +45,7 @@ const EditUserForm: FC<IProps> = ({
               placeholder="christopher"
               className="input-style"
               onChange={(e) => handleEditChange(e, "name")}
-              value={editUserForm.name}
+              value={state.editUserForm.name}
             />
           </div>
           <div className="flex flex-col gap-1">
@@ -72,7 +56,7 @@ const EditUserForm: FC<IProps> = ({
               placeholder="Jakarta, Greenlake Residence"
               className="input-style"
               onChange={(e) => handleEditChange(e, "address")}
-              value={editUserForm.address}
+              value={state.editUserForm.address}
             />
           </div>
           <div className="flex flex-col gap-1">
@@ -83,7 +67,7 @@ const EditUserForm: FC<IProps> = ({
               placeholder="l / p"
               className="input-style"
               onChange={(e) => handleEditChange(e, "gender")}
-              value={editUserForm.gender}
+              value={state.editUserForm.gender}
             />
           </div>
           <div className="flex flex-col gap-1">
@@ -93,7 +77,7 @@ const EditUserForm: FC<IProps> = ({
               id="edituser-born-date"
               className="input-style"
               onChange={(e) => handleEditChange(e, "born_date")}
-              value={editUserForm.born_date.toString()}
+              value={state.editUserForm.born_date.toString()}
             />
           </div>
           <button

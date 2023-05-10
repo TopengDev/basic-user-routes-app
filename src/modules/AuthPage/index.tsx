@@ -1,23 +1,14 @@
-import { type FC, useState } from "react";
+import { type FC, useContext } from "react";
 import { RegisForm, LoginForm } from "@/components";
-import { IFormState } from "@/interfaces";
+import { GlobalContext } from "@/GlobalState";
 
 const AuthPage: FC = () => {
-  const [formState, setFormState] = useState<IFormState>({
-    pOpt: 0,
-    name: "",
-    email: "",
-    password: "",
-  });
+  const { state } = useContext(GlobalContext);
 
   return (
-    <main className="centered-layout">
-      {formState.pOpt == 0 ? (
-        <RegisForm formState={formState} setFormState={setFormState} />
-      ) : (
-        <LoginForm formState={formState} setFormState={setFormState} />
-      )}
-    </main>
+    <div className="centered-layout">
+      {state.authFormState.pOpt == 0 ? <RegisForm /> : <LoginForm />}
+    </div>
   );
 };
 

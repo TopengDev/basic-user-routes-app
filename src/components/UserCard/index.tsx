@@ -1,52 +1,42 @@
-import type { FC, Dispatch, SetStateAction } from "react";
+import { FC, useContext } from "react";
 import { EditSVG, TrashSVG } from "../SVG";
 import { IUser, IEditUserForm } from "@/interfaces";
-import { deleteUserById } from "@/utils/api";
+import { GlobalContext } from "@/GlobalState";
 
 interface IProps {
   user: IUser;
-  state: {
-    addUserPopupWindow: boolean;
-    editUserPopupWindow: boolean;
-    deleteConfirmationPopup: boolean;
-  };
-  setState: Dispatch<
-    SetStateAction<{
-      addUserPopupWindow: boolean;
-      editUserPopupWindow: boolean;
-      deleteConfirmationPopup: boolean;
-    }>
-  >;
-  setEditUserForm: Dispatch<SetStateAction<IEditUserForm>>;
-  users: IUser[];
-  setUsers: Dispatch<SetStateAction<IUser[]>>;
-  delId: number;
-  setDelId: Dispatch<SetStateAction<number>>;
 }
 
-const UserCard: FC<IProps> = ({
-  user,
-  state,
-  setState,
-  setEditUserForm,
-  users,
-  setUsers,
-  setDelId,
-  delId,
-}) => {
+const UserCard: FC<IProps> = ({ user }) => {
+  const { state, setState } = useContext(GlobalContext);
+
   const handleEdit = async (user: IEditUserForm) => {
-    setEditUserForm({
-      id: user.id,
-      name: user.name,
-      address: user.address,
-      gender: user.gender,
-      born_date: user.born_date,
+    setState({
+      ...state,
+      popups: {
+        editUserPopupWindow: true,
+        deleteConfirmationPopup: false,
+        addUserPopupWindow: false,
+      },
+      editUserForm: {
+        id: user.id,
+        name: user.name,
+        address: user.address,
+        gender: user.gender,
+        born_date: user.born_date,
+      },
     });
-    setState({ ...state, editUserPopupWindow: true });
   };
   const handleDelete = async (id: number) => {
-    setDelId(id);
-    setState({ ...state, deleteConfirmationPopup: true });
+    setState({
+      ...state,
+      delId: id,
+      popups: {
+        editUserPopupWindow: false,
+        deleteConfirmationPopup: true,
+        addUserPopupWindow: false,
+      },
+    });
   };
   const formatDate = () => {
     const date = new Date(user.born_date);

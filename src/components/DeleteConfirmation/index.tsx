@@ -1,38 +1,22 @@
-import { type FC, useState, type Dispatch, type SetStateAction } from "react";
-import IDefaultProps, { IUser } from "@/interfaces";
-import { addUser, deleteUserById, getUsers } from "@/utils/api";
+import { type FC, useContext } from "react";
+import { deleteUserById, getUsers } from "@/utils/api";
 import FormCard from "../FormCard";
+import { GlobalContext } from "@/GlobalState";
 
-interface IProps extends IDefaultProps {
-  state: {
-    addUserPopupWindow: boolean;
-    editUserPopupWindow: boolean;
-    deleteConfirmationPopup: boolean;
-  };
-  setState: Dispatch<
-    SetStateAction<{
-      addUserPopupWindow: boolean;
-      editUserPopupWindow: boolean;
-      deleteConfirmationPopup: boolean;
-    }>
-  >;
-  setUsers: Dispatch<SetStateAction<IUser[]>>;
-  delId: number;
-  users: IUser[];
-}
+const DeleteConfirmation: FC = () => {
+  const { state, setState } = useContext(GlobalContext);
 
-const DeleteConfirmation: FC<IProps> = ({
-  delId,
-  setState,
-  state,
-  users,
-  setUsers,
-}) => {
   const deleteById = async () => {
-    await deleteUserById(delId);
-    setState({ ...state, deleteConfirmationPopup: false });
-    const tmpUsers = users.filter((user) => user.id != delId);
-    setUsers(tmpUsers);
+    await deleteUserById(state.delId);
+    const users = await getUsers();
+    setState({
+      ...state,
+      users: users.data,
+      popups: {
+        ...state.popups,
+        deleteConfirmationPopup: false,
+      },
+    });
   };
 
   return (

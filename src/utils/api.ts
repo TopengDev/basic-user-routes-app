@@ -1,6 +1,6 @@
 import { setCookie, parseCookies } from "nookies";
 
-import { IAddUserForm, IFormState } from "@/interfaces";
+import { IAddUserForm, IAuthForm } from "@/interfaces";
 
 const getToken = () => {
   const token = parseCookies().accessToken;
@@ -39,7 +39,7 @@ export const getMe = async () => {
   }
 };
 
-export const register = async (formState: IFormState) => {
+export const register = async (formState: IAuthForm) => {
   const { name, email, password } = formState;
   const body = JSON.stringify({
     name,
@@ -73,7 +73,7 @@ export const register = async (formState: IFormState) => {
   }
 };
 
-export const login = async (formState: IFormState) => {
+export const login = async (formState: IAuthForm) => {
   const { email, password } = formState;
   const body = JSON.stringify({ email, password });
   const apiUrl = `${process.env.NEXT_PUBLIC_BASE_API_URL}/auth/login`;

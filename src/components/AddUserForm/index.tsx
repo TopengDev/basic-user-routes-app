@@ -1,46 +1,37 @@
-import { type FC, useState, type Dispatch, type SetStateAction } from "react";
-import { IAddUserForm, IUser } from "@/interfaces";
+import { type FC, useContext } from "react";
 import { addUser, getUsers } from "@/utils/api";
 import FormCard from "../FormCard";
+import { GlobalContext } from "@/GlobalState";
 
-interface IProps {
-  state: {
-    addUserPopupWindow: boolean;
-    editUserPopupWindow: boolean;
-    deleteConfirmationPopup: boolean;
-  };
-  setState: Dispatch<
-    SetStateAction<{
-      addUserPopupWindow: boolean;
-      editUserPopupWindow: boolean;
-      deleteConfirmationPopup: boolean;
-    }>
-  >;
-  setUsers: Dispatch<SetStateAction<IUser[]>>;
-}
+const AddUserForm: FC = () => {
+  const { state, setState } = useContext(GlobalContext);
 
-const AddUserForm: FC<IProps> = ({ setState, setUsers, state }) => {
   const handleAddSubmit = async (e: React.FormEvent<HTMLFormElement>) => {
     e.preventDefault();
-    await addUser(addUserForm);
-    setState({ ...state, addUserPopupWindow: false });
-    await getUsers().then((data) => setUsers(data.data));
+    await addUser(state.addUserForm);
+    const users = await getUsers();
+    setState({
+      ...state,
+      popups: {
+        ...state.popups,
+        addUserPopupWindow: false,
+      },
+      users: users.data,
+    });
   };
   const handleChange = (
     e: React.ChangeEvent<HTMLInputElement>,
     field: string
   ) => {
-    setAddUserForm({
-      ...addUserForm,
-      [field]: e.target.value,
+    setState({
+      ...state,
+      addUserForm: {
+        ...state.addUserForm,
+        [field]: e.target.value,
+      },
     });
   };
-  const [addUserForm, setAddUserForm] = useState<IAddUserForm>({
-    name: "",
-    address: "",
-    gender: "l",
-    born_date: new Date(),
-  });
+
   return (
     <FormCard>
       <div className="flex flex-col justify-center">
@@ -74,7 +65,7 @@ const AddUserForm: FC<IProps> = ({ setState, setUsers, state }) => {
             <div>
               <label htmlFor="adduser-gender">Gender</label>
               <div className="pt-2">
-                <label className="pr-4">
+                <label className="pr-4" htmlFor="">
                   <input
                     type="radio"
                     name="gender"

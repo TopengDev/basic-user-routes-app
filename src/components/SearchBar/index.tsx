@@ -1,21 +1,23 @@
-import { type FC, useState, type Dispatch, type SetStateAction } from "react";
+import { type FC, useContext } from "react";
 import { getUserById, getUsers } from "@/utils/api";
-import { IUser } from "@/interfaces";
+import { GlobalContext } from "@/GlobalState";
 
-interface IProps {
-  setUsers: Dispatch<SetStateAction<IUser[]>>;
-}
+const SearchBar: FC = () => {
+  const { state, setState } = useContext(GlobalContext);
 
-const SearchBar: FC<IProps> = ({ setUsers }) => {
-  const [search, setSearch] = useState("");
   const handleSearch = async () => {
-    const id = parseInt(search);
-    if (search) {
-      await getUserById(id).then((data) => {
-        if (data) setUsers([data.data]);
-      });
+    if (state.search) {
+      const id = parseInt(state.search);
+      const user = await getUserById(id);
+      if (user) {
+        setState({ ...state, users: [user.data] });
+      } else {
+        setState({ ...state, users: [] });
+      }
     } else {
-      await getUsers().then((data) => setUsers(data.data));
+      const users = await getUsers();
+      setState({ ...state, users: users.data });
+      console.log(state);
     }
   };
   return (
@@ -29,7 +31,7 @@ const SearchBar: FC<IProps> = ({ setUsers }) => {
       <input
         type="number"
         className="border-2 border-solid border-slate-200 px-3 py-2 rounded-lg p1"
-        onChange={(e) => setSearch(e.target.value)}
+        onChange={(e) => setState({ ...state, search: e.target.value })}
       />
     </div>
   );

@@ -1,4 +1,4 @@
-import { ReactNode, Dispatch, SetStateAction } from "react";
+import { ReactNode } from "react";
 
 interface IDefaultProps {
   children?: ReactNode;
@@ -38,14 +38,15 @@ export interface IMe {
   email: string | null;
 }
 
-export interface IFormState {
+export interface IPopups {
+  addUserPopupWindow: boolean;
+  editUserPopupWindow: boolean;
+  deleteConfirmationPopup: boolean;
+}
+
+export interface IAuthForm {
   pOpt: 0 | 1;
   name: string;
   email: string;
   password: string;
-}
-
-export interface IFormProps {
-  formState: IFormState;
-  setFormState: Dispatch<SetStateAction<IFormState>>;
 }

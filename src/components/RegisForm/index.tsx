@@ -1,26 +1,34 @@
-import type { FC } from "react";
+import { FC, useContext } from "react";
 import { FormCard } from "../../components";
 import { register } from "@/utils/api";
 import { useRouter } from "next/router";
-import { IFormProps } from "@/interfaces";
+import { GlobalContext } from "@/GlobalState";
 
-const RegisForm: FC<IFormProps> = ({ formState, setFormState }) => {
+const RegisForm: FC = () => {
+  const { state, setState } = useContext(GlobalContext);
+
   const router = useRouter();
 
   const handleChange = (
     e: React.ChangeEvent<HTMLInputElement>,
     field: string
   ) => {
-    setFormState({
-      ...formState,
-      [field]: e.target.value,
+    setState({
+      ...state,
+      authFormState: {
+        ...state.authFormState,
+        [field]: e.target.value,
+      },
     });
   };
 
   const handleSubmit = async (e: React.FormEvent<HTMLFormElement>) => {
     e.preventDefault();
-    const registered = await register(formState);
-    if (registered) router.reload();
+    const registered = await register(state.authFormState);
+    if (registered) {
+      setState({ ...state, token: true });
+      router.reload();
+    }
   };
 
   return (
@@ -71,7 +79,12 @@ const RegisForm: FC<IFormProps> = ({ formState, setFormState }) => {
         </form>
         <button
           className="mt-4 h4"
-          onClick={() => setFormState({ ...formState, pOpt: 1 })}
+          onClick={() =>
+            setState({
+              ...state,
+              authFormState: { ...state.authFormState, pOpt: 1 },
+            })
+          }
         >
           Log in
         </button>

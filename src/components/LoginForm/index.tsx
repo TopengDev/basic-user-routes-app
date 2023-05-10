@@ -1,27 +1,36 @@
-import { type FC } from "react";
+import { useContext, type FC } from "react";
 import FormCard from "../FormCard";
 import { useRouter } from "next/router";
 import { login } from "@/utils/api";
-import { IFormProps } from "@/interfaces";
+import { GlobalContext } from "@/GlobalState";
 
-const LoginForm: FC<IFormProps> = ({ formState, setFormState }) => {
+const LoginForm: FC = () => {
+  const { state, setState } = useContext(GlobalContext);
+
   const router = useRouter();
 
   const handleChange = (
     e: React.ChangeEvent<HTMLInputElement>,
     field: string
   ) => {
-    setFormState({
-      ...formState,
-      [field]: e.target.value,
+    setState({
+      ...state,
+      authFormState: {
+        ...state.authFormState,
+        [field]: e.target.value,
+      },
     });
   };
 
   const handleSubmit = async (e: React.FormEvent<HTMLFormElement>) => {
     e.preventDefault();
 
-    const LoggedIn = await login(formState);
-    if (LoggedIn) router.reload();
+    const LoggedIn = await login(state.authFormState);
+    console.log(LoggedIn);
+    if (LoggedIn) {
+      setState({ ...state, token: true });
+      router.reload();
+    }
   };
 
   return (
@@ -62,7 +71,12 @@ const LoginForm: FC<IFormProps> = ({ formState, setFormState }) => {
         </form>
         <button
           className="mt-4 h4"
-          onClick={() => setFormState({ ...formState, pOpt: 0 })}
+          onClick={() =>
+            setState({
+              ...state,
+              authFormState: { ...state.authFormState, pOpt: 0 },
+            })
+          }
         >
           Register
         </button>
